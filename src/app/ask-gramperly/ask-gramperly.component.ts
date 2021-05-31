@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-ask-gramperly',
@@ -18,19 +18,24 @@ export class AskGramperlyComponent implements OnInit {
     'Hold your horses...',
     'Hold your horses, sonny...',
     'Is this our table?...',
-    'Hmmm... that\'s a tough one...'
+    'Hmmm... that\'s a tough one...',
+    'What\'s your hurry?...',
+    'Where\'s the fire?...',
+    'Did I ever tell you the story about...',
+    'Zzzzz... Zzzzz... Zzzzz...',
+    'Mr. Bigshot. Eating dinner after 5...'
   ];
 
   loadingGifs = [
-    "<img src='https://media.giphy.com/media/K6aZlaZEJjt4s/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/26tno5f6B0AwsTC9O/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/l3709n4zm8kgeoxyr8/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/gWNr07kKBUM3S/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/T1Ta8bcA6KkUM/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/ip9n5Cg3Pcfyo/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/l2JJO0D0JpgoU5OTe/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/de5bARu0SsXiU/giphy.gif' />",
-    "<img src='https://media.giphy.com/media/XpxVDWILLXC92/giphy.gif' />"
+    '<img src=\'https://media.giphy.com/media/K6aZlaZEJjt4s/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/26tno5f6B0AwsTC9O/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/l3709n4zm8kgeoxyr8/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/gWNr07kKBUM3S/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/T1Ta8bcA6KkUM/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/ip9n5Cg3Pcfyo/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/l2JJO0D0JpgoU5OTe/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/de5bARu0SsXiU/giphy.gif\' />',
+    '<img src=\'https://media.giphy.com/media/XpxVDWILLXC92/giphy.gif\' />'
   ];
 
   getRandomLoadingTime() {
