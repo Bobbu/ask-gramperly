@@ -38,23 +38,23 @@ export class AskGramperlyComponent implements OnInit {
     '<img src=\'https://media.giphy.com/media/XpxVDWILLXC92/giphy.gif\' />'
   ];
 
-  getRandomLoadingTime() {
+  getRandomLoadingTime(): number {
     const min = 5000;
     const max = 15000;
     this.lastRandomLoadingTime = Math.floor(Math.random() * (max - min + 1)) + min;
     return this.lastRandomLoadingTime;
   }
 
-  lastRandomLoadingTimeInSeconds() {
-    return (this.lastRandomLoadingTime/1000);
+  lastRandomLoadingTimeInSeconds(): number {
+    return (this.lastRandomLoadingTime / 1000);
   }
 
-  getRandomMessage(): String {
+  getRandomMessage(): string {
     const randomIndex = Math.floor(Math.random() * (this.loadingMessages.length - 1));
     return this.loadingMessages[randomIndex];
   }
 
-  getRandomGif(): String {
+  getRandomGif(): string {
     const randomIndex = Math.floor(Math.random() * (this.loadingGifs.length - 1));
     return this.loadingGifs[randomIndex];
   }
