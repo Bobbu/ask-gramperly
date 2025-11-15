@@ -1,6 +1,5 @@
 {
   "app": "node CdkStack.js",
-  "profile": "askgramperly",
   "context": {
     "aws-cdk:enableDiffNoFail": "true"
   }

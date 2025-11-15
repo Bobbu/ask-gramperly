@@ -6,7 +6,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "cdkdeploy": "npm run build && cd .. && ng build && cd aws-cdk && cdk deploy"
+    "cdkdeploy": "npm run build && cd .. && ng build && cd aws-cdk && cdk deploy --require-approval never"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.176.0",
