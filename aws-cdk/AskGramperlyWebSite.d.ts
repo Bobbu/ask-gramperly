@@ -1,10 +1,10 @@
-import cdk = require("@aws-cdk/core");
+import { Construct } from 'constructs';
 export interface StaticSiteProps {
     domainName: string;
     siteSubDomain: string;
 }
 export declare class AskGramperlyWebSite {
     private construct;
-    constructor(construct: cdk.Construct);
+    constructor(construct: Construct);
     deploySite(): void;
 }

@@ -6,26 +6,17 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "cdkdeploy": "npm run build && cd .. && ng build --prod && cd aws-cdk && cdk deploy"
+    "cdkdeploy": "npm run build && cd .. && ng build && cd aws-cdk && cdk deploy"
   },
   "dependencies": {
-    "@aws-cdk/aws-certificatemanager": "^1.94.1",
-    "@aws-cdk/aws-cloudfront": "^1.94.1",
-    "@aws-cdk/aws-iam": "^1.94.1",
-    "@aws-cdk/aws-route53": "^1.94.1",
-    "@aws-cdk/aws-route53-targets": "^1.94.1",
-    "@aws-cdk/aws-s3": "^1.94.1",
-    "@aws-cdk/aws-s3-deployment": "^1.94.1",
-    "@aws-cdk/cloudformation-diff": "^1.94.1",
-    "@aws-cdk/core": "^1.94.1",
-    "@aws-cdk/yaml-cfn": "^1.94.1",
-    "@types/node": "^14.11.8",
-    "cdk": "^1.82.0",
-    "cdk-assets": "^1.94.1",
-    "cdk-multi-profile-plugin": "^1.2.1",
-    "promptly": "^3.2.0",
-    "source-map-support": "^0.5.16",
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "aws-cdk-lib": "^2.176.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "aws-cdk": "^2.176.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
