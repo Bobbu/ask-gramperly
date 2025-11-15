@@ -1,19 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'app-ask-gramperly',
     templateUrl: './ask-gramperly.component.html',
     styleUrls: ['./ask-gramperly.component.scss'],
     standalone: true,
-    imports: [CommonModule, NgxSpinnerModule]
+    imports: [CommonModule]
 })
 export class AskGramperlyComponent {
-  private spinner = inject(NgxSpinnerService);
-
   gramperlyQuestion = '';
   showResults = false;
+  isLoading = false;
+  currentMessage = '';
+  currentGif = '';
   lastRandomLoadingTime = 1000;
 
   loadingMessages = [
@@ -68,17 +68,17 @@ export class AskGramperlyComponent {
   }
 
   onSubmit(): void {
-     /** spinner starts onSubmit() */
-    this.spinner.show();
+    /** Show loading overlay */
+    this.isLoading = true;
     this.showResults = false;
+    this.currentMessage = this.getRandomMessage();
+    this.currentGif = this.getRandomGif();
+
     setTimeout(() => {
-      /** spinner ends after 5 seconds */
+      /** Hide loading and show results */
+      this.isLoading = false;
       this.showResults = true;
-      this.spinner.hide();
-      }, this.getRandomLoadingTime());
-    // var search = this.gramperlyQuestion;
-    // search.replace(/\s/g, '+');
-    // window.location.href = `https://api.duckduckgo.com/?q=${search}`
+    }, this.getRandomLoadingTime());
   }
 
 }

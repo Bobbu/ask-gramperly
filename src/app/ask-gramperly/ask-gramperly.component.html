@@ -1,7 +1,21 @@
-<ngx-spinner [fullScreen]="true" size="large" type="timer" bdColor="rgba(51,51,51,0.95)">
-  <!-- template='{{ getRandomGif() }}' -->
-  <p style="font-size: 20px; color: white" >{{ getRandomMessage() }}</p>
-</ngx-spinner>
+<!-- Custom loading overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-content">
+    <!-- Spinning Clock -->
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hour-hand"></div>
+        <div class="minute-hand"></div>
+      </div>
+    </div>
+
+    <!-- Animated GIF -->
+    <div [innerHTML]="currentGif" class="loading-gif"></div>
+
+    <!-- Message -->
+    <p class="loading-message">{{ currentMessage }}</p>
+  </div>
+</div>
 <div class="container">
 
 

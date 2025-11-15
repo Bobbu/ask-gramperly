@@ -8,3 +8,112 @@ h1 {
 .input-group {
   margin: auto;
 }
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(3px);
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.loading-gif {
+  margin-bottom: 30px;
+
+  img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 10px;
+  }
+}
+
+.loading-message {
+  font-size: 24px;
+  color: white;
+  font-style: italic;
+  margin: 0;
+}
+
+// Spinning Clock Animation
+.clock {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+
+.clock-face {
+  width: 100%;
+  height: 100%;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+
+  // Clock center dot
+  &::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+}
+
+.hour-hand,
+.minute-hand {
+  position: absolute;
+  background: #fff;
+  transform-origin: bottom center;
+  bottom: 50%;
+  left: 50%;
+  border-radius: 4px;
+}
+
+.hour-hand {
+  width: 6px;
+  height: 30px;
+  margin-left: -3px;
+  animation: rotate-hour 4s linear infinite;
+}
+
+.minute-hand {
+  width: 4px;
+  height: 45px;
+  margin-left: -2px;
+  animation: rotate-minute 2s linear infinite;
+}
+
+@keyframes rotate-hour {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate-minute {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
