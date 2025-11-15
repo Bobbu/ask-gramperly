@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
     selector: 'app-ask-gramperly',
     templateUrl: './ask-gramperly.component.html',
     styleUrls: ['./ask-gramperly.component.scss'],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, NgxSpinnerModule]
 })
-export class AskGramperlyComponent implements OnInit {
+export class AskGramperlyComponent {
+  private spinner = inject(NgxSpinnerService);
 
   gramperlyQuestion = '';
   showResults = false;
@@ -60,14 +63,8 @@ export class AskGramperlyComponent implements OnInit {
     return this.loadingGifs[randomIndex];
   }
 
-
-  constructor(private spinner: NgxSpinnerService) { }
-
-  ngOnInit(): void {
-  }
-
-  onUpdateQuestion(event: any): void {
-    this.gramperlyQuestion = event.target.value;
+  onUpdateQuestion(event: Event): void {
+    this.gramperlyQuestion = (event.target as HTMLInputElement).value;
   }
 
   onSubmit(): void {
