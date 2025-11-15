@@ -4,18 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AskGramperly is an Angular 10 web application with AWS CDK infrastructure-as-code for deployment to S3. The application is a humorous single-page app that simulates asking "Gramperly" questions with random loading animations and messages.
+AskGramperly is an Angular 19 web application with AWS CDK infrastructure-as-code for deployment to S3. The application is a humorous single-page app that simulates asking "Gramperly" questions with random loading animations and messages. The application uses standalone components (no NgModules).
 
 ## Development Commands
 
 ### Angular Application
 
 - **Start dev server**: `npm start` or `ng serve` (runs on http://localhost:4200/)
-- **Build for production**: `ng build --prod` (outputs to `dist/ask-gramperly/`)
-- **Build for development**: `ng build` or `npm run build`
+- **Build for production**: `ng build` (outputs to `dist/ask-gramperly/`)
+  - Note: The `--prod` flag is deprecated in Angular 12+, production is now the default
+- **Build for development**: `ng build --configuration development` or `npm run build`
 - **Watch mode**: `npm run watch` (rebuilds on file changes)
 - **Run tests**: `npm test` or `ng test` (runs Karma tests)
-- **Lint code**: `ng lint` (runs TSLint)
+- **Lint code**: `ng lint` (runs ESLint)
 
 ### AWS CDK Deployment
 
@@ -36,11 +37,17 @@ All CDK commands must be run from the `aws-cdk/` directory.
 
 - **Main component**: `src/app/ask-gramperly/ask-gramperly.component.ts`
   - Single interactive component that handles question input
-  - Uses `ngx-spinner` for loading animations
+  - Uses `ngx-spinner` v18 for loading animations
   - Displays random loading messages and GIFs during simulated processing
   - Currently a mock implementation (doesn't actually search, just shows random delays)
+  - **Standalone component** using `inject()` function for dependency injection
 
-- **Routing**: Basic Angular routing configured in `app-routing.module.ts`
+- **App structure**: Modern standalone architecture
+  - `main.ts` - Uses `bootstrapApplication()` instead of module bootstrap
+  - `app.config.ts` - Application configuration with providers
+  - No NgModules - all components are standalone
+
+- **Routing**: Routes configured in `app.config.ts` using `provideRouter()`
 - **Styling**: SCSS-based styling (`styles.scss`, component-specific SCSS files)
 
 ### Infrastructure (AWS CDK)
@@ -57,11 +64,13 @@ Located in `aws-cdk/` directory with separate package.json and dependencies.
 
 ### Configuration
 
-- **TypeScript**: Version 4.0.2 (Angular), 4.0.3 (CDK)
-- **Angular**: Version 10.2.4
-- **AWS CDK**: Version 1.94.1
-- **Linting**: TSLint with strict rules (max line length: 140, single quotes, etc.)
+- **TypeScript**: Version 5.8.3 (Angular), 4.0.3 (CDK)
+- **Angular**: Version 19.2.15
+- **Angular CDK**: Version 19.x
+- **AWS CDK**: Version 1.94.1 (needs updating to v2)
+- **Linting**: ESLint (@angular-eslint v20.6.0)
 - **Build output**: `dist/ask-gramperly/` (used by CDK for S3 deployment)
+- **Node.js**: Compatible with Node.js v22+ (no legacy OpenSSL provider needed)
 
 ## Deployment Philosophy
 
@@ -70,11 +79,12 @@ This project follows a **Continuous Deployment** approach where all infrastructu
 ## Code Quality Requirements
 
 - Run `ng lint` before committing to ensure zero warnings
-- TSLint is configured with strict rules including:
-  - Single quotes for strings
-  - 140 character line length limit
-  - Proper spacing and indentation (spaces, not tabs)
-  - Angular-specific rules (component/directive naming, lifecycle hooks, etc.)
+- ESLint is configured with Angular-specific rules including:
+  - Prefer standalone components over NgModules
+  - Use `inject()` function instead of constructor injection
+  - Accessibility requirements (alt text for images, etc.)
+  - TypeScript strict type checking (no `any` types)
+  - No empty lifecycle methods
 
 ## Environment Configuration
 
