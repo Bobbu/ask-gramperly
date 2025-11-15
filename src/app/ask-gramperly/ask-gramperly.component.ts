@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
-  selector: 'app-ask-gramperly',
-  templateUrl: './ask-gramperly.component.html',
-  styleUrls: ['./ask-gramperly.component.scss']
+    selector: 'app-ask-gramperly',
+    templateUrl: './ask-gramperly.component.html',
+    styleUrls: ['./ask-gramperly.component.scss'],
+    standalone: false
 })
 export class AskGramperlyComponent implements OnInit {
 
