@@ -26,10 +26,11 @@ All CDK commands must be run from the `aws-cdk/` directory.
 - **Deploy infrastructure and application**: `cd aws-cdk && npm run cdkdeploy`
   - This runs the full deployment pipeline:
     1. Builds CDK TypeScript code
-    2. Builds Angular app in production mode (`ng build --prod`)
+    2. Builds Angular app in production mode (`ng build`)
     3. Deploys infrastructure and uploads assets to S3 via `cdk deploy`
 - **Synthesize CloudFormation**: `cd aws-cdk && cdk synth`
 - **View diff**: `cd aws-cdk && cdk diff`
+- **Destroy stack**: `cd aws-cdk && cdk destroy` (removes all infrastructure)
 
 ## Architecture
 
@@ -54,20 +55,22 @@ All CDK commands must be run from the `aws-cdk/` directory.
 
 Located in `aws-cdk/` directory with separate package.json and dependencies.
 
+- **CDK Version**: v2.176.0 (modern consolidated package)
 - **Main stack**: `CdkStack.ts` - Defines the CDK app and instantiates the website deployment
 - **Website deployment**: `AskGramperlyWebSite.ts` - Creates and configures:
   - S3 bucket (`askgramperly.com`) with website hosting enabled
-  - Public read access
+  - Bucket policy for public read access (modern approach)
   - Automatic deployment of `dist/ask-gramperly/` contents to S3
   - Uses `index.html` for both index and error documents (SPA routing)
+  - Auto-delete objects enabled for easier stack cleanup
   - **Note**: Removal policy is set to DESTROY (not production-safe)
 
 ### Configuration
 
-- **TypeScript**: Version 5.8.3 (Angular), 4.0.3 (CDK)
+- **TypeScript**: Version 5.8.3 (both Angular and CDK)
 - **Angular**: Version 19.2.15
 - **Angular CDK**: Version 19.x
-- **AWS CDK**: Version 1.94.1 (needs updating to v2)
+- **AWS CDK**: Version 2.176.0 (modern consolidated package)
 - **Linting**: ESLint (@angular-eslint v20.6.0)
 - **Build output**: `dist/ask-gramperly/` (used by CDK for S3 deployment)
 - **Node.js**: Compatible with Node.js v22+ (no legacy OpenSSL provider needed)
