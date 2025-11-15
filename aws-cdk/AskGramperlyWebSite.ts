@@ -42,12 +42,22 @@ export class AskGramperlyWebSite {
 
     new cdk.CfnOutput(this.construct, "BucketUrl", { value: siteBucket.bucketName });
 
-    // Deploy site contents to S3 bucket
+    // Import existing CloudFront distribution for cache invalidation
+    const distribution = cdk.aws_cloudfront.Distribution.fromDistributionAttributes(
+      this.construct,
+      "CloudFrontDistribution",
+      {
+        distributionId: "EVBARN2K870NX",
+        domainName: "d4qfcuqanutci.cloudfront.net"
+      }
+    );
+
+    // Deploy site contents to S3 bucket and invalidate CloudFront cache
     new s3deploy.BucketDeployment(this.construct, "DeployWebSite", {
       sources: [s3deploy.Source.asset("../dist/ask-gramperly")],
       destinationBucket: siteBucket,
-      //   distribution,
-      //    distributionPaths: ["/*"],
+      distribution,
+      distributionPaths: ["/*"],
     });
   }
 }
