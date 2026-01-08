@@ -39,15 +39,39 @@
       <br/><br/>
     </div>
   </div>
-  <div *ngIf=showResults class="row">
+
+  <!-- Search Results -->
+  <div *ngIf="showResults" class="row">
     <div class="col-12">
-      <p style="color: gray">My mind is not as sharp as it once was. No results ({{lastRandomLoadingTimeInSeconds() | number }} seconds - what's your hurry?)</p>
+      <p class="search-time-message">
+        Found {{ searchResults.length }} result{{ searchResults.length !== 1 ? 's' : '' }}
+        ({{ lastRandomLoadingTimeInSeconds() | number:'1.0-0' }} seconds - what's your hurry?)
+      </p>
+
+      <!-- Error state -->
+      <div *ngIf="searchError" class="alert alert-warning">
+        <p>My memory isn't what it used to be... couldn't find anything. Try again later, sonny.</p>
+      </div>
+
+      <!-- Results list -->
+      <div *ngIf="searchResults.length > 0" class="search-results">
+        <div *ngFor="let result of searchResults" class="search-result-item">
+          <div class="result-domain">{{ getDomainFromUrl(result.url) }}</div>
+          <a [href]="result.url" target="_blank" rel="noopener noreferrer" class="result-title">
+            {{ result.title }}
+          </a>
+          <p class="result-description">{{ result.description }}</p>
+        </div>
+      </div>
+
+      <!-- No results state -->
+      <div *ngIf="searchResults.length === 0 && !searchError" class="no-results">
+        <p>My mind is not as sharp as it once was. No results found.</p>
+      </div>
+
       <br/>
       <h3>People also ask:</h3>
-      <p>Is this our table?</p>
-      <p>What?</p>
-      <p>Where did I put my shoes?</p>
-      <p>Where to buy Ensure?</p>
+      <p *ngFor="let question of gramperlyQuestions">{{ question }}</p>
     </div>
   </div>
 </div>

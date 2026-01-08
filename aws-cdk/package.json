@@ -6,12 +6,14 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "cdkdeploy": "npm run build && cd .. && ng build && cd aws-cdk && cdk deploy --require-approval never"
+    "cdkdeploy": "npm run build && cd .. && ng build && cd aws-cdk && cdk deploy --require-approval never",
+    "create-secret": "aws secretsmanager create-secret --name askgramperly/brave-api-key --secret-string"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.176.0",
     "constructs": "^10.0.0",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "esbuild": "^0.24.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

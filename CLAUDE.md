@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AskGramperly is an Angular 19 web application with AWS CDK infrastructure-as-code for deployment to S3. The application is a humorous single-page app that simulates asking "Gramperly" questions with random loading animations and messages. The application uses standalone components (no NgModules).
+AskGramperly is an Angular 19 web application with AWS CDK infrastructure-as-code for deployment to S3. The application is a humorous "slow search engine" that makes users wait 5-15 seconds before showing real search results via the Brave Search API. The application uses standalone components (no NgModules).
 
 ## Development Commands
 
@@ -37,11 +37,15 @@ All CDK commands must be run from the `aws-cdk/` directory.
 ### Frontend Structure
 
 - **Main component**: `src/app/ask-gramperly/ask-gramperly.component.ts`
-  - Single interactive component that handles question input
-  - Uses `ngx-spinner` v18 for loading animations
-  - Displays random loading messages and GIFs during simulated processing
-  - Currently a mock implementation (doesn't actually search, just shows random delays)
+  - Single interactive component that handles question input and displays results
+  - Custom CSS clock animation during loading (no external spinner library)
+  - Displays random loading messages and GIFs during intentional 5-15 second delays
+  - Calls real Brave Search API via backend Lambda to fetch actual search results
   - **Standalone component** using `inject()` function for dependency injection
+
+- **Search service**: `src/app/services/search.service.ts`
+  - Injectable service that calls the backend Search API
+  - Returns typed SearchResult objects (title, url, description)
 
 - **App structure**: Modern standalone architecture
   - `main.ts` - Uses `bootstrapApplication()` instead of module bootstrap
@@ -56,7 +60,7 @@ All CDK commands must be run from the `aws-cdk/` directory.
 Located in `aws-cdk/` directory with separate package.json and dependencies.
 
 - **CDK Version**: v2.176.0 (modern consolidated package)
-- **Main stack**: `CdkStack.ts` - Defines the CDK app and instantiates the website deployment
+- **Main stack**: `CdkStack.ts` - Defines the CDK app and instantiates all infrastructure
 - **Website deployment**: `AskGramperlyWebSite.ts` - Creates and configures:
   - S3 bucket (`askgramperly.com`) with website hosting enabled
   - Bucket policy for public read access (modern approach)
@@ -64,6 +68,12 @@ Located in `aws-cdk/` directory with separate package.json and dependencies.
   - Uses `index.html` for both index and error documents (SPA routing)
   - Auto-delete objects enabled for easier stack cleanup
   - **Note**: Removal policy is set to DESTROY (not production-safe)
+- **Search API**: `SearchApi.ts` - Creates and configures:
+  - Lambda function (`lambda/search.ts`) that proxies requests to Brave Search API
+  - API Gateway REST API with `/search` endpoint (GET with query param `?q=`)
+  - Secrets Manager integration for storing Brave API key
+  - CORS configured for all origins
+  - Rate limiting: 10 requests/second, burst of 20
 
 ### Configuration
 
@@ -94,3 +104,26 @@ This project follows a **Continuous Deployment** approach where all infrastructu
 - **Development**: `src/environments/environment.ts` (`production: false`)
 - **Production**: `src/environments/environment.prod.ts` (`production: true`)
 - Angular automatically swaps these during production builds via file replacements in `angular.json`
+- **searchApiUrl**: Must be updated in both environment files after first CDK deployment outputs the API Gateway URL
+
+## First-Time Setup
+
+Before the first deployment, you must create the Brave Search API key secret in AWS Secrets Manager:
+
+1. Sign up for a Brave Search API key at https://api-dashboard.search.brave.com/app/plans (free tier: 2,000 queries/month)
+2. Create the secret in AWS:
+   ```bash
+   aws secretsmanager create-secret \
+     --name askgramperly/brave-api-key \
+     --secret-string "YOUR_BRAVE_API_KEY_HERE"
+   ```
+3. Deploy the CDK stack:
+   ```bash
+   cd aws-cdk && npm run cdkdeploy
+   ```
+4. Copy the `SearchApiUrl` output from the deployment
+5. Update both `src/environments/environment.ts` and `src/environments/environment.prod.ts` with the API URL
+6. Redeploy to include the updated environment:
+   ```bash
+   cd aws-cdk && npm run cdkdeploy
+   ```

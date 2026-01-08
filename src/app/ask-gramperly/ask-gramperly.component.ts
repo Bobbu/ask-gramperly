@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SearchService, SearchResult } from '../services/search.service';
 
 @Component({
     selector: 'app-ask-gramperly',
@@ -9,12 +10,16 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule]
 })
 export class AskGramperlyComponent {
+  private searchService = inject(SearchService);
+
   gramperlyQuestion = '';
   showResults = false;
   isLoading = false;
   currentMessage = '';
   currentGif = '';
   lastRandomLoadingTime = 1000;
+  searchResults: SearchResult[] = [];
+  searchError = false;
 
   loadingMessages = [
     'I\'m doing the best I can...',
@@ -40,6 +45,14 @@ export class AskGramperlyComponent {
     '<img src=\'https://media.giphy.com/media/l2JJO0D0JpgoU5OTe/giphy.gif\' />',
     '<img src=\'https://media.giphy.com/media/de5bARu0SsXiU/giphy.gif\' />',
     '<img src=\'https://media.giphy.com/media/XpxVDWILLXC92/giphy.gif\' />'
+  ];
+
+  gramperlyQuestions = [
+    'Is this our table?',
+    'Where did I put my shoes?',
+    'Where to buy Ensure?',
+    'What time is the early bird special?',
+    'How to increase font size on phone?',
   ];
 
   getRandomLoadingTime(): number {
@@ -68,17 +81,43 @@ export class AskGramperlyComponent {
   }
 
   onSubmit(): void {
-    /** Show loading overlay */
+    if (!this.gramperlyQuestion.trim()) {
+      return;
+    }
+
     this.isLoading = true;
     this.showResults = false;
+    this.searchResults = [];
+    this.searchError = false;
     this.currentMessage = this.getRandomMessage();
     this.currentGif = this.getRandomGif();
 
+    const delayTime = this.getRandomLoadingTime();
+
+    // Start the actual search immediately (it runs in the background)
+    this.searchService.search(this.gramperlyQuestion).subscribe({
+      next: (response) => {
+        this.searchResults = response.results;
+      },
+      error: () => {
+        this.searchError = true;
+        this.searchResults = [];
+      },
+    });
+
+    // But only show results after the comedic delay
     setTimeout(() => {
-      /** Hide loading and show results */
       this.isLoading = false;
       this.showResults = true;
-    }, this.getRandomLoadingTime());
+    }, delayTime);
   }
 
+  getDomainFromUrl(url: string): string {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.hostname.replace('www.', '');
+    } catch {
+      return url;
+    }
+  }
 }
