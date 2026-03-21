@@ -32,6 +32,11 @@
         <input (keyup.enter)="onSubmit()" type="text" class="form-control" (input)="onUpdateQuestion($event)" placeholder="Enter your question, sonny." >
         <button (click)="onSubmit()" type="submit" class="btn btn-primary">Ask away</button>
       </div>
+      <div class="high-gear-option">
+        <label>
+          <input type="checkbox" [(ngModel)]="highGear"> Get Gramp into high gear!
+        </label>
+      </div>
     </div>
   </div>
   <div class="row">

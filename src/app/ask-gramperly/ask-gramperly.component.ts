@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { SearchService, SearchResult } from '../services/search.service';
 
 @Component({
@@ -7,12 +8,13 @@ import { SearchService, SearchResult } from '../services/search.service';
     templateUrl: './ask-gramperly.component.html',
     styleUrls: ['./ask-gramperly.component.scss'],
     standalone: true,
-    imports: [CommonModule]
+    imports: [CommonModule, FormsModule]
 })
 export class AskGramperlyComponent {
   private searchService = inject(SearchService);
 
   gramperlyQuestion = '';
+  highGear = false;
   showResults = false;
   isLoading = false;
   currentMessage = '';
@@ -85,31 +87,41 @@ export class AskGramperlyComponent {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading = !this.highGear;
     this.showResults = false;
     this.searchResults = [];
     this.searchError = false;
     this.currentMessage = this.getRandomMessage();
     this.currentGif = this.getRandomGif();
 
-    const delayTime = this.getRandomLoadingTime();
+    const delayTime = this.highGear ? 0 : this.getRandomLoadingTime();
 
     // Start the actual search immediately (it runs in the background)
     this.searchService.search(this.gramperlyQuestion).subscribe({
       next: (response) => {
         this.searchResults = response.results;
+        if (this.highGear) {
+          this.isLoading = false;
+          this.showResults = true;
+        }
       },
       error: () => {
         this.searchError = true;
         this.searchResults = [];
+        if (this.highGear) {
+          this.isLoading = false;
+          this.showResults = true;
+        }
       },
     });
 
-    // But only show results after the comedic delay
-    setTimeout(() => {
-      this.isLoading = false;
-      this.showResults = true;
-    }, delayTime);
+    if (!this.highGear) {
+      // Show results after the comedic delay
+      setTimeout(() => {
+        this.isLoading = false;
+        this.showResults = true;
+      }, delayTime);
+    }
   }
 
   getDomainFromUrl(url: string): string {

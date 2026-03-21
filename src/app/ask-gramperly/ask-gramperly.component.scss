@@ -9,6 +9,22 @@ h1 {
   margin: auto;
 }
 
+.high-gear-option {
+  margin-top: 0.5rem;
+  text-align: center;
+
+  label {
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 0.3rem;
+    cursor: pointer;
+  }
+}
+
 .loading-overlay {
   position: fixed;
   top: 0;
